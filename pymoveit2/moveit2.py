@@ -75,6 +75,7 @@ class MoveIt2:
         end_effector_name: str,
         group_name: str = "arm",
         execute_via_moveit: bool = False,
+        planner_id: str = ""
         ignore_new_calls_while_executing: bool = False,
         callback_group: Optional[CallbackGroup] = None,
         follow_joint_trajectory_action_name: str = "DEPRECATED",
@@ -131,6 +132,7 @@ class MoveIt2:
             frame_id=base_link_name,
             group_name=group_name,
             end_effector=end_effector_name,
+            planner_id=planner_id,
         )
 
         # Flag to determine whether to execute trajectories via Move Group Action, or rather by calling
@@ -2221,7 +2223,7 @@ class MoveIt2:
 
     @classmethod
     def __init_move_action_goal(
-        cls, frame_id: str, group_name: str, end_effector: str
+        cls, frame_id: str, group_name: str, end_effector: str, planner_id: str
     ) -> MoveGroup.Goal:
         move_action_goal = MoveGroup.Goal()
         move_action_goal.request.workspace_parameters.header.frame_id = frame_id
@@ -2238,7 +2240,7 @@ class MoveIt2:
         # move_action_goal.request.trajectory_constraints = "Ignored"
         # move_action_goal.request.reference_trajectories = "Ignored"
         move_action_goal.request.pipeline_id = ""
-        move_action_goal.request.planner_id = ""
+        move_action_goal.request.planner_id = planner_id
         move_action_goal.request.group_name = group_name
         move_action_goal.request.num_planning_attempts = 5
         move_action_goal.request.allowed_planning_time = 0.5
